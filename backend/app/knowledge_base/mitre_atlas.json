@@ -1,0 +1,94 @@
+{
+  "framework": {
+    "id": "MITRE_ATLAS",
+    "name": "MITRE ATLAS (Adversarial Threat Landscape for Artificial-Intelligence Systems)",
+    "version": "v4.5.0",
+    "publisher": "MITRE Corporation",
+    "release_date": "2025-10-15",
+    "official_url": "https://atlas.mitre.org/",
+    "description": "Adversarial tactics, techniques, and case studies targeting machine learning and generative AI systems."
+  },
+  "controls": [
+    {
+      "id": "MITRE_ATLAS:AML.T0051",
+      "control_id": "AML.T0051",
+      "title": "LLM Prompt Injection",
+      "description": "Adversaries craft malicious prompts as inputs to an LLM that cause the LLM to act in unintended ways, bypassing safety instructions or hijacking application control flow.",
+      "category": "Initial Access / Execution",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://atlas.mitre.org/techniques/AML.T0051"
+    },
+    {
+      "id": "MITRE_ATLAS:AML.T0051.000",
+      "control_id": "AML.T0051.000",
+      "title": "LLM Prompt Injection: Direct",
+      "description": "An adversary directly interacts with the LLM user input channel to override system instructions, escape prompt delimiters, or subvert model alignment constraints.",
+      "category": "Execution / Privilege Escalation",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://atlas.mitre.org/techniques/AML.T0051.000"
+    },
+    {
+      "id": "MITRE_ATLAS:AML.T0051.001",
+      "control_id": "AML.T0051.001",
+      "title": "LLM Prompt Injection: Indirect",
+      "description": "An adversary plants malicious instructions inside external data sources (documents, web pages, emails, RAG chunks) that the LLM ingests during a victim's session.",
+      "category": "Initial Access / Execution",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://atlas.mitre.org/techniques/AML.T0051.001"
+    },
+    {
+      "id": "MITRE_ATLAS:AML.T0054",
+      "control_id": "AML.T0054",
+      "title": "LLM Jailbreak",
+      "description": "Adversaries use persona adoption, hypothetical framing, or encoding schemes to bypass safety guardrails and operational restrictions placed on an LLM.",
+      "category": "Defense Evasion",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://atlas.mitre.org/techniques/AML.T0054"
+    },
+    {
+      "id": "MITRE_ATLAS:AML.T0056",
+      "control_id": "AML.T0056",
+      "title": "LLM Meta Prompt Extraction",
+      "description": "Adversaries elicit the confidential initial instructions (system prompt / meta prompt) given to an LLM to uncover proprietary logic, internal endpoints, or embedded secrets.",
+      "category": "Discovery / Collection",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://atlas.mitre.org/techniques/AML.T0056"
+    },
+    {
+      "id": "MITRE_ATLAS:AML.T0071",
+      "control_id": "AML.T0071",
+      "title": "False RAG Entry Injection / RAG Poisoning",
+      "description": "Adversaries inject crafted or poisoned passages into a Retrieval-Augmented Generation (RAG) knowledge base or retrieval context to manipulate generated outputs.",
+      "category": "Persistence / Impact",
+      "applicable_architectures": ["RAG_PIPELINE", "HYBRID"],
+      "official_reference_url": "https://atlas.mitre.org/techniques/AML.T0071"
+    },
+    {
+      "id": "MITRE_ATLAS:AML.T0048",
+      "control_id": "AML.T0048",
+      "title": "Exfiltration via AI Agent or External Sink",
+      "description": "Adversaries exfiltrate sensitive context, credentials, or cross-tenant RAG documents by inducing the LLM to render external Markdown image beacons or invoke outbound agent tools.",
+      "category": "Exfiltration",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://atlas.mitre.org/techniques/AML.T0048"
+    },
+    {
+      "id": "MITRE_ATLAS:AML.T0040",
+      "control_id": "AML.T0040",
+      "title": "ML Model Inference API Access",
+      "description": "Adversaries abuse inference APIs via unbounded token generation requests, parameter manipulation, or metadata query probing to exhaust resources or extract sensitive data.",
+      "category": "Collection / Impact",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://atlas.mitre.org/techniques/AML.T0040"
+    },
+    {
+      "id": "MITRE_ATLAS:AML.T0043",
+      "control_id": "AML.T0043",
+      "title": "Craft Adversarial Data",
+      "description": "Adversaries craft structured inputs, filter operator payloads, or tool parameter payloads designed to subvert downstream AI pipeline components.",
+      "category": "Resource Development / Execution",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://atlas.mitre.org/techniques/AML.T0043"
+    }
+  ]
+}

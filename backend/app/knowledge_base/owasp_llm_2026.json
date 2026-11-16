@@ -1,0 +1,103 @@
+{
+  "framework": {
+    "id": "OWASP_LLM_2026",
+    "name": "OWASP Top 10 for Large Language Model Applications",
+    "version": "2026",
+    "publisher": "OWASP Foundation",
+    "release_date": "2026-01-15",
+    "official_url": "https://genai.owasp.org/llm-top-10/",
+    "description": "Authoritative OWASP Top 10 security risk taxonomy for Large Language Model and Generative AI applications."
+  },
+  "controls": [
+    {
+      "id": "OWASP_LLM_2026:LLM01",
+      "control_id": "LLM01:2026",
+      "title": "Prompt Injection",
+      "description": "Crafted direct user inputs or indirect external data sources manipulate the Large Language Model's instruction hierarchy, leading to unauthorized instruction execution, policy bypass, or context hijacking.",
+      "category": "Input & Context Integrity",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+    },
+    {
+      "id": "OWASP_LLM_2026:LLM02",
+      "control_id": "LLM02:2026",
+      "title": "Sensitive Information Disclosure",
+      "description": "Failure to prevent the LLM or its surrounding application pipeline from disclosing confidential data, credentials, API keys, proprietary business logic, or regulated PII in model responses.",
+      "category": "Data Confidentiality & Privacy",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/llmrisk/llm02-sensitive-information-disclosure/"
+    },
+    {
+      "id": "OWASP_LLM_2026:LLM03",
+      "control_id": "LLM03:2026",
+      "title": "Excessive Agency",
+      "description": "Granting an LLM-based system unconstrained permissions, excessive tool access, or autonomous execution capability without deterministic parameter validation and human-in-the-loop authorization gates.",
+      "category": "Agency & Access Control",
+      "applicable_architectures": ["AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/llmrisk/llm03-excessive-agency/"
+    },
+    {
+      "id": "OWASP_LLM_2026:LLM04",
+      "control_id": "LLM04:2026",
+      "title": "Supply Chain Vulnerabilities",
+      "description": "Risks arising from compromised pre-trained model weights, third-party adapters, model hosting providers, or unverified plugin/MCP dependencies in the AI lifecycle.",
+      "category": "Supply Chain & Provenance",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/llmrisk/llm04-supply-chain/"
+    },
+    {
+      "id": "OWASP_LLM_2026:LLM05",
+      "control_id": "LLM05:2026",
+      "title": "Data and Model Poisoning",
+      "description": "Manipulation of pre-training, fine-tuning, or RAG knowledge corpus data to introduce backdoors, persistent biases, or targeted adversarial triggers.",
+      "category": "Data & Corpus Integrity",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/llmrisk/llm05-data-and-model-poisoning/"
+    },
+    {
+      "id": "OWASP_LLM_2026:LLM06",
+      "control_id": "LLM06:2026",
+      "title": "Unbounded Consumption",
+      "description": "Allowing unconstrained inference requests, missing max_tokens ceilings, recursive agent loops, or resource-amplifying prompts that result in Denial of Service (DoS) or financial Denial of Wallet (DoW).",
+      "category": "Resource & Execution Governance",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/llmrisk/llm06-unbounded-consumption/"
+    },
+    {
+      "id": "OWASP_LLM_2026:LLM07",
+      "control_id": "LLM07:2026",
+      "title": "Misinformation and Overreliance",
+      "description": "Uncritical downstream reliance on hallucinated, ungrounded, or non-deterministic LLM outputs without citation verification or deterministic validation.",
+      "category": "Output Reliability & Grounding",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/llmrisk/llm07-misinformation/"
+    },
+    {
+      "id": "OWASP_LLM_2026:LLM08",
+      "control_id": "LLM08:2026",
+      "title": "System Prompt Leakage",
+      "description": "Exposure of hidden system instructions, internal prompt templates, proprietary routing rules, or sensitive credentials embedded within the system prompt preamble.",
+      "category": "Prompt Confidentiality",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/llmrisk/llm08-system-prompt-leakage/"
+    },
+    {
+      "id": "OWASP_LLM_2026:LLM09",
+      "control_id": "LLM09:2026",
+      "title": "Vector and Embedding Weaknesses",
+      "description": "Security flaws in RAG vector databases, chunking pipelines, embedding generation, and metadata filtering that enable cross-tenant document leakage, filter manipulation, or retrieval poisoning.",
+      "category": "RAG & Vector Security",
+      "applicable_architectures": ["RAG_PIPELINE", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/llmrisk/llm09-vector-and-embedding-weaknesses/"
+    },
+    {
+      "id": "OWASP_LLM_2026:LLM10",
+      "control_id": "LLM10:2026",
+      "title": "Improper Output Handling",
+      "description": "Insufficient validation, sanitization, and context-aware encoding of LLM responses before passing them to downstream browsers, Markdown renderers, SQL databases, or OS command sinks.",
+      "category": "Output Sanitization & Sink Security",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/llmrisk/llm10-improper-output-handling/"
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "framework": {
+    "id": "OWASP_AGENTIC_2026",
+    "name": "OWASP Top 10 for Agentic AI Applications",
+    "version": "2026",
+    "publisher": "OWASP Foundation",
+    "release_date": "2026-02-01",
+    "official_url": "https://genai.owasp.org/agentic-top-10/",
+    "description": "Authoritative OWASP security risk taxonomy for autonomous AI agents, tool-calling workflows, and multi-agent architectures."
+  },
+  "controls": [
+    {
+      "id": "OWASP_AGENTIC_2026:ASI01",
+      "control_id": "ASI01",
+      "title": "Agent Goal Hijacking",
+      "description": "Adversarial manipulation of an autonomous agent's planning state, objective hierarchy, or sub-goal decomposition via direct prompts or untrusted external context.",
+      "category": "Agent Planning & Control Flow",
+      "applicable_architectures": ["AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/agentic-top-10/asi01-agent-goal-hijacking/"
+    },
+    {
+      "id": "OWASP_AGENTIC_2026:ASI02",
+      "control_id": "ASI02",
+      "title": "Tool Misuse and Parameter Manipulation",
+      "description": "Inducing an AI agent to invoke unauthorized tools or inject malicious/escalated arguments into structured tool calls due to missing server-side schema and authorization enforcement.",
+      "category": "Agent Tool Security",
+      "applicable_architectures": ["AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/agentic-top-10/asi02-tool-misuse/"
+    },
+    {
+      "id": "OWASP_AGENTIC_2026:ASI03",
+      "control_id": "ASI03",
+      "title": "Identity and Privilege Compromise",
+      "description": "Execution of agent tools using over-privileged static service accounts rather than scoped, per-user delegated credentials (confused deputy escalation).",
+      "category": "Agent Identity & Least Privilege",
+      "applicable_architectures": ["AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/agentic-top-10/asi03-identity-and-privilege-compromise/"
+    },
+    {
+      "id": "OWASP_AGENTIC_2026:ASI04",
+      "control_id": "ASI04",
+      "title": "Memory and Context Poisoning",
+      "description": "Injection of malicious state or instructions into an agent's short-term working context, episodic memory, or shared RAG retrieval store to persist compromise across sessions.",
+      "category": "Agent Memory Integrity",
+      "applicable_architectures": ["RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/agentic-top-10/asi04-memory-poisoning/"
+    },
+    {
+      "id": "OWASP_AGENTIC_2026:ASI05",
+      "control_id": "ASI05",
+      "title": "Cascading Hallucination and Reasoning Loops",
+      "description": "Compounding reasoning errors or unbounded planning iterations across multi-step agent loops that lead to runaway resource exhaustion or unintended tool execution.",
+      "category": "Agent Execution Governance",
+      "applicable_architectures": ["AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/agentic-top-10/asi05-cascading-hallucination/"
+    },
+    {
+      "id": "OWASP_AGENTIC_2026:ASI06",
+      "control_id": "ASI06",
+      "title": "Uncontrolled Code and Sandboxed Execution",
+      "description": "Allowing agents to generate and execute arbitrary code, SQL queries, or shell commands without strict sandboxing, AST validation, and network egress controls.",
+      "category": "Execution Sandboxing",
+      "applicable_architectures": ["LLM_APP", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/agentic-top-10/asi06-uncontrolled-code-execution/"
+    },
+    {
+      "id": "OWASP_AGENTIC_2026:ASI07",
+      "control_id": "ASI07",
+      "title": "Multi-Agent Communication Spoofing",
+      "description": "Lack of cryptographic authentication and schema validation on inter-agent messages, enabling a compromised sub-agent to hijack peer orchestrators.",
+      "category": "Multi-Agent Trust Boundaries",
+      "applicable_architectures": ["AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/agentic-top-10/asi07-multi-agent-spoofing/"
+    },
+    {
+      "id": "OWASP_AGENTIC_2026:ASI08",
+      "control_id": "ASI08",
+      "title": "Agentic Supply Chain and Tool Schema Integrity",
+      "description": "Ingesting unverified third-party MCP servers, OpenAPI tool specs, or loose JSON parameter schemas ('additionalProperties: true') that introduce untrusted instructions or parameter injection vectors.",
+      "category": "Tool & Schema Supply Chain",
+      "applicable_architectures": ["AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/agentic-top-10/asi08-agentic-supply-chain/"
+    },
+    {
+      "id": "OWASP_AGENTIC_2026:ASI09",
+      "control_id": "ASI09",
+      "title": "Insufficient Human-in-the-Loop Oversight",
+      "description": "Absence of mandatory human approval gates before an autonomous agent executes state-mutating, financial, or cross-tenant privileged tool actions.",
+      "category": "Human Oversight & Authorization",
+      "applicable_architectures": ["AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/agentic-top-10/asi09-insufficient-human-oversight/"
+    },
+    {
+      "id": "OWASP_AGENTIC_2026:ASI10",
+      "control_id": "ASI10",
+      "title": "Auditability and Telemetry Failures",
+      "description": "Failure to log immutable, correlation-tagged traces of agent reasoning steps, retrieved chunks, and tool call arguments for forensic verification.",
+      "category": "Telemetry & Auditability",
+      "applicable_architectures": ["RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://genai.owasp.org/agentic-top-10/asi10-auditability-failures/"
+    }
+  ]
+}

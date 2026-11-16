@@ -1,0 +1,103 @@
+{
+  "framework": {
+    "id": "NIST_AI_RMF_600_1",
+    "name": "NIST AI Risk Management Framework (AI RMF 1.0 & NIST AI 600-1 GenAI Profile)",
+    "version": "1.0",
+    "publisher": "National Institute of Standards and Technology (NIST)",
+    "release_date": "2024-07-26",
+    "official_url": "https://www.nist.gov/itl/ai-risk-management-framework",
+    "description": "NIST AI RMF 1.0 core functions (GOVERN, MAP, MEASURE, MANAGE) and NIST AI 600-1 Generative AI Profile risk controls."
+  },
+  "controls": [
+    {
+      "id": "NIST_AI_RMF_600_1:GV-1.1",
+      "control_id": "GV-1.1",
+      "title": "GOVERN 1.1: Legal, Regulatory and Security Policy Alignment",
+      "description": "Legal and regulatory requirements involving AI security, data privacy, and scope authorization are understood, managed, and documented across the organization.",
+      "category": "GOVERN",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook/Govern"
+    },
+    {
+      "id": "NIST_AI_RMF_600_1:GV-1.2",
+      "control_id": "GV-1.2",
+      "title": "GOVERN 1.2: Trustworthy AI Characteristics Integration",
+      "description": "Processes and organizational policies integrate trustworthy, secure, and resilient GenAI operational boundaries into system engineering standards.",
+      "category": "GOVERN",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook/Govern"
+    },
+    {
+      "id": "NIST_AI_RMF_600_1:MP-2.3",
+      "control_id": "MP-2.3",
+      "title": "MAP 2.3: Scientific Integrity, Operational Boundaries and Threat Mapping",
+      "description": "Scientific integrity and architectural trust boundaries (prompt hierarchy, retrieval context, downstream sinks, and agent tool routers) are mapped and validated.",
+      "category": "MAP",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook/Map"
+    },
+    {
+      "id": "NIST_AI_RMF_600_1:MP-4.1",
+      "control_id": "MP-4.1",
+      "title": "MAP 4.1: Third-Party Data, RAG Corpus and Tool Risk Mapping",
+      "description": "Approaches for mapping security and intellectual property risks of external context documents, RAG vector stores, and connected agent tools are in place.",
+      "category": "MAP",
+      "applicable_architectures": ["RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook/Map"
+    },
+    {
+      "id": "NIST_AI_RMF_600_1:MS-2.5",
+      "control_id": "MS-2.5",
+      "title": "MEASURE 2.5: AI System Validity, Reliability and Guardrail Verification",
+      "description": "The AI system to be deployed is demonstrated to be valid, reliable, and bounded via deterministic testing of input/output guardrails and configuration parameters.",
+      "category": "MEASURE",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook/Measure"
+    },
+    {
+      "id": "NIST_AI_RMF_600_1:MS-2.6",
+      "control_id": "MS-2.6",
+      "title": "MEASURE 2.6: Safety, Resource Consumption and Failure Mode Evaluation",
+      "description": "AI system safety risks, unbounded token consumption ceilings, and recursive agent execution budgets are regularly evaluated and stress-tested.",
+      "category": "MEASURE",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook/Measure"
+    },
+    {
+      "id": "NIST_AI_RMF_600_1:MS-2.7",
+      "control_id": "MS-2.7",
+      "title": "MEASURE 2.7: AI System Security and Adversarial Red-Teaming Resilience",
+      "description": "AI system security and resilience against direct/indirect prompt injection, meta-prompt extraction, RAG filter bypass, and agent goal hijacking are evaluated (NIST AI 600-1).",
+      "category": "MEASURE",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook/Measure"
+    },
+    {
+      "id": "NIST_AI_RMF_600_1:MS-2.10",
+      "control_id": "MS-2.10",
+      "title": "MEASURE 2.10: Privacy Risk and Sensitive Data Leakage Examination",
+      "description": "Privacy risk of the GenAI system—including memorization, PII disclosure, credential exposure, and cross-tenant RAG leakage—is examined and documented.",
+      "category": "MEASURE",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook/Measure"
+    },
+    {
+      "id": "NIST_AI_RMF_600_1:MG-2.2",
+      "control_id": "MG-2.2",
+      "title": "MANAGE 2.2: Mechanisms to Sustain Deployment Safety and Human Oversight",
+      "description": "Mechanisms are in place and applied to sustain the value of deployed AI systems, including Human-in-the-Loop approval gates, output sanitization, and tenant isolation.",
+      "category": "MANAGE",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook/Manage"
+    },
+    {
+      "id": "NIST_AI_RMF_600_1:MG-3.2",
+      "control_id": "MG-3.2",
+      "title": "MANAGE 3.2: Pre-trained Models, Third-Party RAG and Tool Risk Monitoring",
+      "description": "Pre-trained models, vector stores, and external agent tools are monitored for configuration drift, anomalous invocations, and emerging vulnerabilities.",
+      "category": "MANAGE",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook/Manage"
+    }
+  ]
+}

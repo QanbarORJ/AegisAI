@@ -1,0 +1,121 @@
+{
+  "framework": {
+    "id": "ISO_42001_23894",
+    "name": "ISO/IEC 42001:2023 (AIMS) & ISO/IEC 23894:2023 (AI Risk Management)",
+    "version": "2023",
+    "publisher": "ISO/IEC",
+    "release_date": "2023-12-18",
+    "official_url": "https://www.iso.org/standard/81230.html",
+    "description": "International standards for Artificial Intelligence Management Systems (ISO/IEC 42001) and AI Risk Management (ISO/IEC 23894)."
+  },
+  "controls": [
+    {
+      "id": "ISO_42001_23894:A.2.2",
+      "control_id": "A.2.2",
+      "title": "AI Policy and Governance Controls (ISO/IEC 42001 Annex A.2)",
+      "description": "Establish and maintain organizational policies governing acceptable AI use, security testing authorization, and operational risk boundaries.",
+      "category": "ISO/IEC 42001 Annex A.2 — Policies Related to AI",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "id": "ISO_42001_23894:A.5.2",
+      "control_id": "A.5.2",
+      "title": "Assessing AI System Impacts (ISO/IEC 42001 Annex A.5)",
+      "description": "Assess and document potential consequences of AI system failures, unauthorized disclosures, or autonomous agent actions on individuals, tenants, and organizations.",
+      "category": "ISO/IEC 42001 Annex A.5 — Assessing Impacts of AI Systems",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "id": "ISO_42001_23894:A.6.2.3",
+      "control_id": "A.6.2.3",
+      "title": "AI System Design and Architectural Specification (ISO/IEC 42001 Annex A.6)",
+      "description": "Specify and implement secure architectural boundaries for prompt handling, retrieval access controls, output sanitization, and tool parameter schemas.",
+      "category": "ISO/IEC 42001 Annex A.6 — AI System Life Cycle",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "id": "ISO_42001_23894:A.6.2.4",
+      "control_id": "A.6.2.4",
+      "title": "AI System Verification and Validation (ISO/IEC 42001 Annex A.6)",
+      "description": "Define and execute verification and validation measures—including adversarial security testing and deterministic canary evaluation—against specified security requirements.",
+      "category": "ISO/IEC 42001 Annex A.6 — AI System Life Cycle",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "id": "ISO_42001_23894:A.6.2.5",
+      "control_id": "A.6.2.5",
+      "title": "AI System Deployment and Resource Limits (ISO/IEC 42001 Annex A.6)",
+      "description": "Ensure deployment configurations enforce resource consumption ceilings, sampling parameter bounds, and environment secret isolation prior to production release.",
+      "category": "ISO/IEC 42001 Annex A.6 — AI System Life Cycle",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "id": "ISO_42001_23894:A.7.4",
+      "control_id": "A.7.4",
+      "title": "Quality and Security of Data for AI Systems (ISO/IEC 42001 Annex A.7)",
+      "description": "Verify that data ingested into RAG vector stores and model contexts meets integrity, sanitization, and tenant classification requirements.",
+      "category": "ISO/IEC 42001 Annex A.7 — Data for AI Systems",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "HYBRID"],
+      "official_reference_url": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "id": "ISO_42001_23894:A.8.2",
+      "control_id": "A.8.2",
+      "title": "System Documentation and Output Transparency (ISO/IEC 42001 Annex A.8)",
+      "description": "Provide clear technical documentation and ensure downstream consumers safely handle and validate AI-generated outputs.",
+      "category": "ISO/IEC 42001 Annex A.8 — Information for Interested Parties",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "id": "ISO_42001_23894:A.9.3",
+      "control_id": "A.9.3",
+      "title": "Human Oversight of AI Systems (ISO/IEC 42001 Annex A.9)",
+      "description": "Enforce effective human oversight and approval mechanisms over autonomous AI agent decisions and privileged tool invocations.",
+      "category": "ISO/IEC 42001 Annex A.9 — Use of AI Systems",
+      "applicable_architectures": ["AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "id": "ISO_42001_23894:A.10.2",
+      "control_id": "A.10.2",
+      "title": "Allocating Responsibilities Across Tenants and Third Parties (ISO/IEC 42001 Annex A.10)",
+      "description": "Enforce strict multi-tenant data isolation and access boundaries between customers, tenants, and external tool providers.",
+      "category": "ISO/IEC 42001 Annex A.10 — Third-Party and Customer Relationships",
+      "applicable_architectures": ["RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://www.iso.org/standard/81230.html"
+    },
+    {
+      "id": "ISO_42001_23894:ISO23894-6.3",
+      "control_id": "ISO23894:6.3",
+      "title": "AI Risk Identification (ISO/IEC 23894 Clause 6.3)",
+      "description": "Systematic identification of AI-specific risk sources, including prompt injection, context poisoning, model configuration drift, and excessive agency.",
+      "category": "ISO/IEC 23894 — AI Risk Assessment",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://www.iso.org/standard/77304.html"
+    },
+    {
+      "id": "ISO_42001_23894:ISO23894-6.4",
+      "control_id": "ISO23894:6.4",
+      "title": "AI Risk Analysis and Evaluation (ISO/IEC 23894 Clause 6.4)",
+      "description": "Quantitative and qualitative evaluation of AI vulnerability severity, exploitability, blast radius, and detection confidence.",
+      "category": "ISO/IEC 23894 — AI Risk Assessment",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://www.iso.org/standard/77304.html"
+    },
+    {
+      "id": "ISO_42001_23894:ISO23894-6.5",
+      "control_id": "ISO23894:6.5",
+      "title": "AI Risk Treatment and Control Verification (ISO/IEC 23894 Clause 6.5)",
+      "description": "Selection, implementation, and post-remediation verification of preventive and detective security controls for AI systems.",
+      "category": "ISO/IEC 23894 — AI Risk Treatment",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://www.iso.org/standard/77304.html"
+    }
+  ]
+}

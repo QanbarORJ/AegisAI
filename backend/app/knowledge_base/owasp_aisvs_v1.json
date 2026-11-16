@@ -1,0 +1,121 @@
+{
+  "framework": {
+    "id": "OWASP_AISVS_V1",
+    "name": "OWASP AI Security Verification Standard (AISVS)",
+    "version": "1.0",
+    "publisher": "OWASP Foundation",
+    "release_date": "2025-11-01",
+    "official_url": "https://owasp.org/www-project-ai-security-verification-standard/",
+    "description": "Comprehensive engineering and verification requirements across 13 control chapters for AI/ML and Generative AI systems."
+  },
+  "controls": [
+    {
+      "id": "OWASP_AISVS_V1:C1",
+      "control_id": "C1",
+      "title": "Training Data Governance and Provenance",
+      "description": "Verify that training, fine-tuning, and evaluation datasets are inventoried, validated for provenance, and scanned for poisoning or unauthorized sensitive data prior to ingestion.",
+      "category": "Data Governance",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://owasp.org/www-project-ai-security-verification-standard/#c1"
+    },
+    {
+      "id": "OWASP_AISVS_V1:C2",
+      "control_id": "C2",
+      "title": "Input Validation and Prompt Boundary Controls",
+      "description": "Verify that user inputs and external context segments are strictly separated from system instructions using structured roles, spotlighting delimiters, and pre-inference input guardrails.",
+      "category": "Input & Prompt Security",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://owasp.org/www-project-ai-security-verification-standard/#c2"
+    },
+    {
+      "id": "OWASP_AISVS_V1:C3",
+      "control_id": "C3",
+      "title": "Output Encoding, Sanitization and Sink Protection",
+      "description": "Verify that all model outputs are treated as untrusted data and undergo context-aware encoding, HTML/Markdown sanitization, Content-Security-Policy enforcement, and parameterized query binding.",
+      "category": "Output & Sink Security",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://owasp.org/www-project-ai-security-verification-standard/#c3"
+    },
+    {
+      "id": "OWASP_AISVS_V1:C4",
+      "control_id": "C4",
+      "title": "Data Privacy, PII Scrubbing and Secret Protection",
+      "description": "Verify that runtime credentials, API keys, and regulated customer PII are excluded from model context and scrubbed via deterministic outbound DLP filters.",
+      "category": "Privacy & DLP",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://owasp.org/www-project-ai-security-verification-standard/#c4"
+    },
+    {
+      "id": "OWASP_AISVS_V1:C5",
+      "control_id": "C5",
+      "title": "System Prompt Confidentiality and Secret Exclusion",
+      "description": "Verify that system prompts contain zero hardcoded credentials or authorization secrets and that output filters prevent verbatim meta-prompt extraction.",
+      "category": "System Prompt Security",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://owasp.org/www-project-ai-security-verification-standard/#c5"
+    },
+    {
+      "id": "OWASP_AISVS_V1:C6",
+      "control_id": "C6",
+      "title": "Model Supply Chain and Artifact Integrity",
+      "description": "Verify cryptographic signatures, checksums, and provenance of model weights, tokenizers, and container images.",
+      "category": "Model Supply Chain",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://owasp.org/www-project-ai-security-verification-standard/#c6"
+    },
+    {
+      "id": "OWASP_AISVS_V1:C7",
+      "control_id": "C7",
+      "title": "Access Control and Multi-Tenant Identity Binding",
+      "description": "Verify that every AI inference, retrieval, and tool execution request is cryptographically bound to the authenticated caller's tenant and role context.",
+      "category": "Identity & Multi-Tenancy",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://owasp.org/www-project-ai-security-verification-standard/#c7"
+    },
+    {
+      "id": "OWASP_AISVS_V1:C8",
+      "control_id": "C8",
+      "title": "RAG Pipeline, Vector Database and Retrieval Security",
+      "description": "Verify mandatory server-side tenant ACL pre-filtering on vector similarity searches, bounded chunk sizes (<= 2048 tokens), immutable metadata filters, and pre-ingestion document sanitization.",
+      "category": "RAG & Vector Store Security",
+      "applicable_architectures": ["RAG_PIPELINE", "HYBRID"],
+      "official_reference_url": "https://owasp.org/www-project-ai-security-verification-standard/#c8"
+    },
+    {
+      "id": "OWASP_AISVS_V1:C9",
+      "control_id": "C9",
+      "title": "Execution Budgets, Token Ceilings and Agent Loop Control",
+      "description": "Verify enforcement of explicit max_tokens generation limits, bounded sampling temperature, per-tenant rate limits, and hard agent iteration caps (max_iterations <= 25).",
+      "category": "Resource & Loop Governance",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://owasp.org/www-project-ai-security-verification-standard/#c9"
+    },
+    {
+      "id": "OWASP_AISVS_V1:C10",
+      "control_id": "C10",
+      "title": "Agent Tool Invocation, MCP Security and HITL Gates",
+      "description": "Verify strict JSON Schema parameter validation ('additionalProperties: false'), server-side scope binding, and mandatory Human-in-the-Loop approval gates for privileged agent tools.",
+      "category": "Agent & MCP Security",
+      "applicable_architectures": ["AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://owasp.org/www-project-ai-security-verification-standard/#c10"
+    },
+    {
+      "id": "OWASP_AISVS_V1:C11",
+      "control_id": "C11",
+      "title": "Secure AI Infrastructure and Network Egress Isolation",
+      "description": "Verify that inference runtimes and agent tool runners enforce SSRF egress filtering, private network isolation, and encrypted credential storage.",
+      "category": "Infrastructure & Network Security",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://owasp.org/www-project-ai-security-verification-standard/#c11"
+    },
+    {
+      "id": "OWASP_AISVS_V1:C12",
+      "control_id": "C12",
+      "title": "Security Logging, Telemetry and Incident Response",
+      "description": "Verify structured, secret-redacted logging of guardrail blocks, retrieval metadata, tool invocations, and anomalous token consumption.",
+      "category": "Monitoring & Incident Response",
+      "applicable_architectures": ["LLM_APP", "RAG_PIPELINE", "AI_AGENT", "HYBRID"],
+      "official_reference_url": "https://owasp.org/www-project-ai-security-verification-standard/#c12"
+    }
+  ]
+}
