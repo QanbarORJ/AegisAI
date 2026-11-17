@@ -2,8 +2,24 @@
 
 from functools import lru_cache
 
-from pydantic import Field
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+_DEFAULT_DEV_JWT_SECRET = (
+    "aegis-dev-jwt-secret-key-do-not-use-in-production-64chars-minimum-001"
+)
+_DEFAULT_DEV_MASTER_KEY = (
+    "aegis-dev-master-key-change-in-production-32bytes-9f8a7b6c5d4e3f"
+)
+_INSECURE_KNOWN_SECRETS = {
+    _DEFAULT_DEV_JWT_SECRET,
+    _DEFAULT_DEV_MASTER_KEY,
+    "change-this-in-production-to-a-64-char-high-entropy-secret-key-01",
+    "changeme",
+    "secret",
+    "password",
+}
+_NON_PRODUCTION_ENVS = {"development", "dev", "test", "testing", "local"}
 
 
 class Settings(BaseSettings):
@@ -32,7 +48,7 @@ class Settings(BaseSettings):
 
     # Authentication & JWT
     aegis_jwt_secret_key: str = Field(
-        default="aegis-dev-jwt-secret-key-do-not-use-in-production-64chars-minimum-001",
+        default=_DEFAULT_DEV_JWT_SECRET,
         alias="AEGIS_JWT_SECRET_KEY",
     )
     aegis_jwt_algorithm: str = Field(default="HS256", alias="AEGIS_JWT_ALGORITHM")
@@ -42,9 +58,49 @@ class Settings(BaseSettings):
 
     # Envelope Encryption Master Key
     aegis_master_encryption_key: str = Field(
-        default="aegis-dev-master-key-change-in-production-32bytes-9f8a7b6c5d4e3f",
+        default=_DEFAULT_DEV_MASTER_KEY,
         alias="AEGIS_MASTER_ENCRYPTION_KEY",
     )
+
+    @model_validator(mode="after")
+    def _validate_security_secrets(self) -> "Settings":
+        jwt_secret = (self.aegis_jwt_secret_key or "").strip()
+        master_key = (self.aegis_master_encryption_key or "").strip()
+
+        if not jwt_secret:
+            raise ValueError("AEGIS_JWT_SECRET_KEY must not be empty.")
+        if not master_key:
+            raise ValueError("AEGIS_MASTER_ENCRYPTION_KEY must not be empty.")
+
+        env_norm = (self.aegis_env or "development").strip().lower()
+        if env_norm not in _NON_PRODUCTION_ENVS:
+            jwt_lower = jwt_secret.lower()
+            if (
+                jwt_secret in _INSECURE_KNOWN_SECRETS
+                or len(jwt_secret) < 32
+                or "do-not-use-in-production" in jwt_lower
+                or "change-in-production" in jwt_lower
+                or "change-this-in-production" in jwt_lower
+            ):
+                raise ValueError(
+                    "AEGIS_JWT_SECRET_KEY uses an insecure default or insufficient length for a "
+                    f"'{self.aegis_env}' environment. Configure an explicit high-entropy secret (>= 32 chars)."
+                )
+
+            master_lower = master_key.lower()
+            if (
+                master_key in _INSECURE_KNOWN_SECRETS
+                or len(master_key) < 32
+                or "do-not-use-in-production" in master_lower
+                or "change-in-production" in master_lower
+                or "change-this-in-production" in master_lower
+            ):
+                raise ValueError(
+                    "AEGIS_MASTER_ENCRYPTION_KEY uses an insecure default or insufficient length for a "
+                    f"'{self.aegis_env}' environment. Configure an explicit high-entropy master key (>= 32 chars)."
+                )
+
+        return self
 
     # SSRF & Outbound Request Safety Budgets
     aegis_allow_isolated_local_targets: bool = Field(

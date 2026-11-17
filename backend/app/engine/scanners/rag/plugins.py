@@ -696,8 +696,18 @@ class RAGArchitectureConfigAuditTest(BaseSecurityTest):
                     )
 
         # 2. Static Architecture Manifest & RAG Harness Configuration Audit (CFG-RAG-001, CFG-RAG-002, CFG-RAG-003)
-        #    Explicitly distinguished as CONFIG_RULE (Static Configuration Weakness vs. Runtime Exploitation)
-        if context.architecture_analysis and not transport_errors:
+        #    Explicitly distinguished as CONFIG_RULE (Static Configuration Weakness vs. Runtime Exploitation).
+        #    Preserves deterministic configuration findings even when active transport operations fail.
+        has_explicit_rag_config = bool(
+            context.rag_harness_config
+            or (context.architecture_manifest or {}).get("rag_config")
+            or "enforce_tenant_filter" in (context.architecture_manifest or {})
+        )
+        if context.architecture_analysis and (
+            not transport_errors
+            or context.integration_mode == "CONFIG_ONLY"
+            or has_explicit_rag_config
+        ):
             for w in context.architecture_analysis.config_weaknesses:
                 rule_id = str(w.get("rule_id") or "")
                 if rule_id in ("CFG-RAG-001", "CFG-RAG-002", "CFG-RAG-003"):

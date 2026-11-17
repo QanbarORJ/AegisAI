@@ -4,11 +4,13 @@ Implements ARCHITECTURE.md Section 2 & 4.3, SECURITY_DESIGN.md Section 2 & 3, an
 """
 
 import asyncio
+import ipaddress
 import json
 import time
 from abc import ABC, abstractmethod
 from collections.abc import Sequence
 from typing import Any
+from urllib.parse import urlsplit, urlunsplit
 
 import httpx
 
@@ -136,6 +138,54 @@ class SafeTargetClient:
 
         return headers
 
+    @staticmethod
+    def _build_pinned_connection_target(
+        target_url: str,
+        url_info: dict[str, Any],
+    ) -> tuple[str, str, dict[str, Any]]:
+        """Pin the outbound connection URL to the validated IP while preserving Host header and TLS SNI."""
+        scheme = str(url_info.get("scheme") or "https").lower()
+        hostname = str(url_info.get("hostname") or "").strip()
+        default_port = 443 if scheme == "https" else 80
+        port = int(url_info.get("port") or default_port)
+        resolved_ips = [str(ip) for ip in (url_info.get("resolved_ips") or []) if ip]
+
+        is_ip_literal = False
+        try:
+            ipaddress.ip_address(hostname)
+            is_ip_literal = True
+        except ValueError:
+            is_ip_literal = False
+
+        host_for_header = (
+            f"[{hostname}]"
+            if (":" in hostname and not hostname.startswith("["))
+            else hostname
+        )
+        host_header = (
+            host_for_header
+            if port == default_port
+            else f"{host_for_header}:{port}"
+        )
+
+        extensions: dict[str, Any] = {"aegis_original_host": hostname}
+        if not is_ip_literal and hostname:
+            extensions["sni_hostname"] = hostname
+
+        if not resolved_ips:
+            return target_url, host_header, extensions
+
+        pinned_ip = resolved_ips[0]
+        extensions["aegis_pinned_ip"] = pinned_ip
+        ip_host = f"[{pinned_ip}]" if ":" in pinned_ip else pinned_ip
+        pinned_netloc = ip_host if port == default_port else f"{ip_host}:{port}"
+
+        split = urlsplit(target_url)
+        connect_url = urlunsplit(
+            (split.scheme, pinned_netloc, split.path, split.query, split.fragment)
+        )
+        return connect_url, host_header, extensions
+
     async def send_json_request(
         self,
         *,
@@ -153,7 +203,7 @@ class SafeTargetClient:
         target_url = (url or self.endpoint_url).strip()
 
         # 1. Pre-connect SSRF & Scope Allowlist verification
-        validate_target_url(
+        url_info = validate_target_url(
             target_url,
             allowed_hosts=self.allowed_hosts,
             resolve_dns=self.resolve_dns,
@@ -179,13 +229,20 @@ class SafeTargetClient:
             "json": sanitize_payload(json_payload),
         }
 
+        connect_url, host_header, req_extensions = self._build_pinned_connection_target(
+            target_url, url_info
+        )
+        if not any(k.lower() == "host" for k in dispatch_headers):
+            dispatch_headers["Host"] = host_header
+
         start = time.perf_counter()
         try:
             req = self._client.build_request(
                 method=method.upper(),
-                url=target_url,
+                url=connect_url,
                 headers=dispatch_headers,
                 json=json_payload,
+                extensions=req_extensions,
             )
             resp = await self._client.send(req, stream=True)
             try:

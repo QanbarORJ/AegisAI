@@ -2,7 +2,7 @@
 
 **Document Purpose:** Pre-Implementation Architectural Blueprint & Engineering Deep-Dive  
 **Current Project State:** Phase 1 Complete (Blueprint & Design Established; **Zero Implementation Code Written Yet**)  
-**Primary Sources:** [PROJECT_PLAN.md](file:///C:/Users/qenber/Desktop/AI-tester/PROJECT_PLAN.md), [ARCHITECTURE.md](file:///C:/Users/qenber/Desktop/AI-tester/ARCHITECTURE.md), [SECURITY_DESIGN.md](file:///C:/Users/qenber/Desktop/AI-tester/SECURITY_DESIGN.md), [DATABASE_SCHEMA.md](file:///C:/Users/qenber/Desktop/AI-tester/DATABASE_SCHEMA.md), [ROADMAP.md](file:///C:/Users/qenber/Desktop/AI-tester/ROADMAP.md), [THREAT_MODEL.md](file:///C:/Users/qenber/Desktop/AI-tester/THREAT_MODEL.md)
+**Primary Sources:** [PROJECT_PLAN.md](./PROJECT_PLAN.md), [ARCHITECTURE.md](./ARCHITECTURE.md), [SECURITY_DESIGN.md](./SECURITY_DESIGN.md), [DATABASE_SCHEMA.md](./DATABASE_SCHEMA.md), [ROADMAP.md](./ROADMAP.md), [THREAT_MODEL.md](./THREAT_MODEL.md)
 
 ---
 
@@ -245,7 +245,7 @@ A critical requirement in AegisAI is **never confusing a broken test with a pass
 
 ### 4.1 Entity Hierarchy & How Tables Relate
 
-Referencing [DATABASE_SCHEMA.md](file:///C:/Users/qenber/Desktop/AI-tester/DATABASE_SCHEMA.md), the database is organized into four logical domains:
+Referencing [DATABASE_SCHEMA.md](./DATABASE_SCHEMA.md), the database is organized into four logical domains:
 
 1. **Tenant & Identity Domain (`organizations`, `users`, `audit_logs`):**
    - Every user and resource belongs to an `organization_id`.

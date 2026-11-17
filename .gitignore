@@ -16,5 +16,10 @@ node_modules/
 dist/
 build/
 .pytest_cache/
+.idea/
+.vscode/
 *.log
+*.tmp
+*.temp
+*.swp
 .DS_Store

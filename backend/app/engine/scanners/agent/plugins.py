@@ -586,8 +586,21 @@ class ExcessiveAgencyAndToolSchemaAuditTest(BaseSecurityTest):
                     )
 
         # 2. Static Architecture & Agent Harness Audit (CFG-AGT-001, CFG-AGT-002, CFG-AGT-003)
-        #    Explicitly distinguished as CONFIG_RULE (Static Configuration Weakness vs. Runtime Exploitation)
-        if context.architecture_analysis and not transport_errors:
+        #    Explicitly distinguished as CONFIG_RULE (Static Configuration Weakness vs. Runtime Exploitation).
+        #    Preserves deterministic configuration findings even when active transport operations fail.
+        has_explicit_agent_config = bool(
+            context.agent_harness_config
+            or (context.architecture_manifest or {}).get("agent_config")
+            or any(
+                k in (context.architecture_manifest or {})
+                for k in ("human_in_the_loop", "max_iterations", "tools")
+            )
+        )
+        if context.architecture_analysis and (
+            not transport_errors
+            or context.integration_mode == "CONFIG_ONLY"
+            or has_explicit_agent_config
+        ):
             for w in context.architecture_analysis.config_weaknesses:
                 rule_id = str(w.get("rule_id") or "")
                 if rule_id in ("CFG-AGT-001", "CFG-AGT-002", "CFG-AGT-003"):

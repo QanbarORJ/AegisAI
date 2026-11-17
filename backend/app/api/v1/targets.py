@@ -33,7 +33,10 @@ def create_target_profile(
     db: Session = Depends(get_db),
 ) -> TargetProfileResponse:
     """Create a tenant-scoped TargetProfile after validating SSRF boundaries and encrypting secrets."""
-    should_resolve_dns = payload.integration_mode != IntegrationModeEnum.SIMULATOR
+    should_resolve_dns = payload.integration_mode not in (
+        IntegrationModeEnum.SIMULATOR,
+        IntegrationModeEnum.CONFIG_ONLY,
+    )
     validate_target_url(
         payload.endpoint_url,
         allowed_hosts=payload.allowed_hosts,

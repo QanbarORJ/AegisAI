@@ -5,29 +5,19 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
-from app.core.logging import redact_sensitive_text
+from app.core.logging import sanitize_structured_payload
 from app.models.audit import AuditLog
 
 logger = logging.getLogger("aegis.audit")
 
 
 def _sanitize_audit_dict(data: dict[str, Any]) -> dict[str, Any]:
-    """Ensure no credentials or raw secrets are ever persisted in audit_logs.details_json."""
-    sanitized: dict[str, Any] = {}
-    for key, value in data.items():
-        lower_key = key.lower()
-        if any(
-            secret_word in lower_key
-            for secret_word in ("password", "secret", "token", "api_key", "credential")
-        ) and lower_key not in ("credential_preview", "scope_attestation_hash"):
-            sanitized[key] = "[REDACTED]"
-        elif isinstance(value, str):
-            sanitized[key] = redact_sensitive_text(value)
-        elif isinstance(value, dict):
-            sanitized[key] = _sanitize_audit_dict(value)
-        else:
-            sanitized[key] = value
-    return sanitized
+    """Ensure no credentials or raw secrets (including nested dicts/lists/tuples) are persisted in audit_logs."""
+    sanitized = sanitize_structured_payload(
+        data or {},
+        credential_placeholder="[REDACTED]",
+    )
+    return sanitized if isinstance(sanitized, dict) else {}
 
 
 def record_audit_event(

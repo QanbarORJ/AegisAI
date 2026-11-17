@@ -71,10 +71,21 @@ class SecurityTestRegistry:
         arch = architecture_type.strip().upper() if architecture_type else None
 
         matched: list[BaseSecurityTest] = []
+        config_audit_test_ids = {
+            "LLM-SPE-001",
+            "LLM-CFG-001",
+            "RAG-ARCH-001",
+            "AGT-PERM-001",
+        }
         for test_id in sorted(self._tests.keys()):
             plugin = self._tests[test_id]()
-            if normalized_modules and plugin.module.upper() not in normalized_modules:
-                continue
+            if normalized_modules:
+                mod_upper = plugin.module.upper()
+                matches_mod = mod_upper in normalized_modules or (
+                    "CONFIG" in normalized_modules and test_id in config_audit_test_ids
+                )
+                if not matches_mod:
+                    continue
 
             if (
                 not include_non_applicable

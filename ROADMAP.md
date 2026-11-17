@@ -1,6 +1,6 @@
 # AegisAI — Phased Engineering Roadmap
 
-**Document Status:** Phase 5 Complete — Modules A, B & C Implemented & Verified (13 Security Test Suites)  
+**Document Status:** Phase 6 + Stage 1 Backend Security & Contract Hardening Complete (76 Backend Tests Passing)  
 **Methodology:** Incremental, Test-Driven, Security-First Delivery  
 
 ---
@@ -95,7 +95,7 @@ flowchart LR
   - `RiskAssessmentEngine` computing AVSS v1.0 scores, vectors, orthogonal severity/confidence/confirmation status, and plain-English rationales.
   - `RemediationEngine` producing 8-section technical remediation guides with secure code examples and verification procedures.
   - `ReportGenerator` generating structured JSON and self-contained, CSP-hardened, print-ready Enterprise HTML/PDF reports with non-certification disclaimers.
-- **Verification:** Schema validation of all 6 framework bundles (60 controls, zero invented IDs), Alembic migration `0002`, and end-to-end API/report/tenancy tests (all 68 backend tests passing).
+- **Verification:** Schema validation of all 6 framework bundles (63 controls, zero invented IDs), Alembic migration `0002`, Stage 1 Backend Security & Contract Hardening (`CONFIG_ONLY` isolation, production secret validation, unified secret redaction, module validation, atomic concurrency guard, and DNS rebinding IP pinning), and end-to-end API/report/tenancy tests (all 76 backend tests passing).
 
 ### Phase 7: Enterprise SaaS Frontend Integration
 - **Deliverables:**

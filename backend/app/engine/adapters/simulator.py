@@ -35,9 +35,11 @@ class BuiltInTargetSimulator(TargetAdapter):
         rag_harness_config: dict[str, Any] | None = None,
         agent_harness_config: dict[str, Any] | None = None,
         max_total_requests: int = 200,
+        integration_mode: str = "SIMULATOR",
     ) -> None:
         super().__init__(client=None)
         self.endpoint_url = endpoint_url
+        self.integration_mode = (integration_mode or "SIMULATOR").upper()
         self.request_template = request_template or {}
         self.architecture_manifest = architecture_manifest or {}
         self.rag_harness_config = rag_harness_config or {}
@@ -92,6 +94,10 @@ class BuiltInTargetSimulator(TargetAdapter):
         extra_payload: dict[str, Any] | None = None,
     ) -> StandardizedTargetResponse:
         start = time.perf_counter()
+        if self.integration_mode == "CONFIG_ONLY":
+            raise RuntimeError(
+                "Active runtime probing is prohibited when integration_mode is CONFIG_ONLY."
+            )
         if self._requests_sent >= self.max_total_requests:
             raise RequestBudgetExceededError(
                 f"Assessment exceeded maximum request budget ({self.max_total_requests} requests)."

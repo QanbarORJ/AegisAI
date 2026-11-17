@@ -15,6 +15,7 @@ import time
 from typing import Any
 
 import httpx
+from sqlalchemy import update
 from sqlalchemy.orm import Session
 
 import app.engine.scanners  # noqa: F401 - ensure built-in scanner plugins are registered
@@ -56,6 +57,9 @@ from app.models.finding import Finding, TechnicalEvidence, TestExecutionResult
 from app.models.target import TargetProfile
 
 logger = logging.getLogger("aegis.engine.orchestrator")
+
+# In-process guard preventing concurrent coroutine execution of the same assessment_id
+_ACTIVE_ASSESSMENT_RUNS: set[str] = set()
 
 # Valid state machine transitions
 VALID_STATE_TRANSITIONS: dict[str, set[str]] = {
@@ -238,6 +242,11 @@ class AssessmentOrchestrator:
         if not target:
             raise ResourceNotFoundError("TargetProfile", assessment.target_profile_id)
 
+        if assessment_id in _ACTIVE_ASSESSMENT_RUNS:
+            raise ScopeViolationError(
+                f"Assessment '{assessment_id}' is already executing concurrently."
+            )
+
         if assessment.status not in (
             AssessmentStatusEnum.DRAFT.value,
             AssessmentStatusEnum.QUEUED.value,
@@ -246,17 +255,45 @@ class AssessmentOrchestrator:
                 f"Cannot execute assessment in state '{assessment.status}'; must be DRAFT or QUEUED."
             )
 
+        _ACTIVE_ASSESSMENT_RUNS.add(assessment_id)
         adapter = None
+        claimed_execution = False
         wall_clock_start = time.monotonic()
 
         try:
             # Ensure assessment is attested and in QUEUED state
             if assessment.status == AssessmentStatusEnum.DRAFT.value:
+                claimed_execution = True
                 self.attest_and_queue_assessment(
                     assessment,
                     target,
                     attested_by_user_id=assessment.initiated_by_user_id,
                 )
+
+            # 1. Atomic database claim transition: QUEUED -> PROFILING
+            claimed_execution = False
+            started_ts = utc_now()
+            claim_stmt = (
+                update(Assessment)
+                .where(
+                    Assessment.id == assessment.id,
+                    Assessment.status == AssessmentStatusEnum.QUEUED.value,
+                )
+                .values(
+                    status=AssessmentStatusEnum.PROFILING.value,
+                    progress_pct=15,
+                    started_at=started_ts,
+                )
+            )
+            claim_res = self.db.execute(claim_stmt)
+            self.db.commit()
+            if (claim_res.rowcount or 0) != 1:
+                self.db.refresh(assessment)
+                raise ScopeViolationError(
+                    f"Cannot execute assessment in state '{assessment.status}'; already claimed or not QUEUED."
+                )
+            claimed_execution = True
+            self.db.refresh(assessment)
 
             # Decrypt credentials in memory only
             decrypted_creds: dict[str, Any] = {}
@@ -290,11 +327,6 @@ class AssessmentOrchestrator:
                 resolve_dns=should_resolve_dns,
             )
 
-            # 1. PROFILING State
-            assessment.started_at = utc_now()
-            self._transition_state(
-                assessment, AssessmentStatusEnum.PROFILING, progress_pct=15
-            )
             record_audit_event(
                 self.db,
                 organization_id=assessment.organization_id,
@@ -345,6 +377,11 @@ class AssessmentOrchestrator:
                 architecture_type=target.architecture_type,
                 include_non_applicable=True,
             )
+            if not planned_plugins:
+                raise ScopeViolationError(
+                    f"No security tests matched selected_modules={assessment.selected_modules}. "
+                    "Assessment cannot execute with zero planned tests."
+                )
             assessment.total_tests_planned = len(planned_plugins)
             assessment.tests_completed = 0
             self.db.commit()
@@ -532,21 +569,26 @@ class AssessmentOrchestrator:
             )
             return assessment
 
-        except (
-            SSRFBlockedError,
-            ScopeViolationError,
-            CredentialDecryptionError,
-             Exception,
-        ) as exc:
+        except BaseException as exc:
+            if not claimed_execution:
+                raise
             logger.error(
-                "Assessment '%s' failed during orchestration: %s",
+                "Assessment '%s' failed or was interrupted during orchestration: %s",
                 assessment.id,
                 exc,
+            )
+            try:
+                self.db.rollback()
+            except Exception:
+                pass
+            assessment = (
+                self.db.query(Assessment).filter(Assessment.id == assessment_id).first()
+                or assessment
             )
             assessment.completed_at = utc_now()
             assessment.summary_metrics = {
                 **(assessment.summary_metrics or {}),
-                "failure_reason": str(exc),
+                "failure_reason": str(exc) or exc.__class__.__name__,
                 "failure_type": exc.__class__.__name__,
             }
             if assessment.status != AssessmentStatusEnum.FAILED.value:
@@ -563,15 +605,16 @@ class AssessmentOrchestrator:
                 resource_id=assessment.id,
                 details={
                     "failure_type": exc.__class__.__name__,
-                    "failure_reason": str(exc),
+                    "failure_reason": str(exc) or exc.__class__.__name__,
                 },
             )
             if isinstance(
                 exc, (SSRFBlockedError, ScopeViolationError, CredentialDecryptionError)
-            ):
+            ) or not isinstance(exc, Exception):
                 raise
             return assessment
         finally:
+            _ACTIVE_ASSESSMENT_RUNS.discard(assessment_id)
             if adapter is not None:
                 await adapter.close()
 

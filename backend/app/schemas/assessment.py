@@ -3,8 +3,9 @@
 from datetime import datetime
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from app.engine.contracts import ScannerModule
 from app.engine.report_generator import extract_finding_framework_mappings
 from app.models.assessment import AssessmentStatusEnum
 from app.models.finding import Finding
@@ -35,6 +36,32 @@ class AssessmentCreateRequest(BaseModel):
         min_length=1,
     )
     scope_attestation: ScopeAttestationPayload
+
+    @field_validator("selected_modules")
+    @classmethod
+    def _validate_selected_modules(cls, value: list[str]) -> list[str]:
+        if not value:
+            raise ValueError("selected_modules must contain at least one module.")
+        allowed = {m.value for m in ScannerModule}
+        normalized: list[str] = []
+        invalid: list[str] = []
+        for raw_mod in value:
+            cleaned = str(raw_mod or "").strip().upper()
+            if not cleaned:
+                continue
+            if cleaned not in allowed:
+                invalid.append(str(raw_mod))
+            elif cleaned not in normalized:
+                normalized.append(cleaned)
+        if invalid:
+            allowed_str = ", ".join(sorted(allowed))
+            raise ValueError(
+                f"Unsupported scanner module(s): {', '.join(invalid)}. "
+                f"Supported modules: [{allowed_str}]."
+            )
+        if not normalized:
+            raise ValueError("selected_modules must contain at least one valid scanner module.")
+        return normalized
 
 
 class TechnicalEvidenceResponse(BaseModel):

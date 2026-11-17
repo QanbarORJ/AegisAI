@@ -47,6 +47,7 @@ def create_target_adapter(
             rag_harness_config=rag_harness_config,
             agent_harness_config=agent_harness_config,
             max_total_requests=max_total_requests or 200,
+            integration_mode=mode,
         )
 
     safe_client = SafeTargetClient(
